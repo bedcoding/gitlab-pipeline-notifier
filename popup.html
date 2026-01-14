@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body {
+      width: 280px;
+      padding: 16px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      margin: 0;
+    }
+
+    h3 {
+      margin: 0 0 16px 0;
+      font-size: 16px;
+      color: #333;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .status-container {
+      background: #f5f5f5;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+    }
+
+    .status-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .status-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .status-label {
+      font-size: 14px;
+      color: #666;
+    }
+
+    .status-value {
+      font-size: 14px;
+      font-weight: 500;
+      color: #333;
+    }
+
+    .toggle-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px;
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      margin-bottom: 12px;
+    }
+
+    .toggle-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: #333;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 48px;
+      height: 24px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: .3s;
+      border-radius: 24px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .3s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: #4CAF50;
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(24px);
+    }
+
+    .snackbar {
+      position: fixed;
+      bottom: 16px;
+      left: 8px;
+      right: 8px;
+      background-color: #323232;
+      color: white;
+      padding: 10px 12px;
+      border-radius: 4px;
+      font-size: 12px;
+      opacity: 0;
+      transition: opacity 0.3s ease-in-out;
+      pointer-events: none;
+      z-index: 1000;
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    .snackbar.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .status-indicator {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: 4px;
+    }
+
+    .status-active {
+      background-color: #4CAF50;
+      animation: pulse 2s infinite;
+    }
+
+    .status-inactive {
+      background-color: #ccc;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+  </style>
+</head>
+<body>
+  <h3>
+    <span id="statusIndicator" class="status-indicator status-inactive"></span>
+    GitLab Pipeline Notifier
+  </h3>
+
+  <div class="toggle-container">
+    <span class="toggle-label">알림 활성화</span>
+    <label class="switch">
+      <input type="checkbox" id="toggleNotification" checked>
+      <span class="slider"></span>
+    </label>
+  </div>
+
+  <div class="status-container">
+    <div class="status-row">
+      <span class="status-label">상태</span>
+      <span class="status-value" id="statusText">대기 중...</span>
+    </div>
+    <div class="status-row">
+      <span class="status-label">감지된 파이프라인</span>
+      <span class="status-value" id="pipelineCount">0개</span>
+    </div>
+  </div>
+
+  <button id="testNotification" style="width: 100%; padding: 8px; background: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 13px;">
+    알림 테스트
+  </button>
+
+  <div class="snackbar" id="snackbar"></div>
+
+  <script src="config.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
